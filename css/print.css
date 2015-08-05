@@ -1,0 +1,29 @@
+h2 {padding: 5px 0; margin: 0; }
+h3 {padding: 5px 0 0 0; color:#7780A2;}
+#body {width:960px; margin: 0 auto; font-family: helvetica, arial, sans-serif; font-size: 12px; color: #6a3636; position:relative;}
+#sectionTop{ border:none;}
+.leftCol {width:100%;}
+.leftCol img {max-width:100%; padding: 10px 10px 0 10px; margin-bottom: -5px;}
+.rightCol{display: none;}
+.section { border-top: #EEE 1px solid; margin-bottom:20px;}
+.benchContTbl td{vertical-align: text-top;}
+.creditCont{width: 480px;}
+.creditCont td {padding: 0 10px;}
+.clear {clear:both;}
+#ccsdLogo {padding-top: 10px;}
+#tocWrapper {
+	position:absolute;
+	top:0;
+	right: 0px;
+	width: 293px;
+	height: 449px;
+
+}
+#tocCol { display: none;}
+#gettingStartedSection {display: none;}
+.warning{ 
+	border: 1px solid #CC0000;
+	background-color: #ff0000;
+	background-color:rgba(255,0,0,0.5);
+	color: #800000;
+}

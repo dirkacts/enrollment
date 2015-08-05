@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
+	<link rel="stylesheet" href="css/style.css?date=3-17-14" type="text/css"/>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		function getParameterByName( name,href )
+		{
+		  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+		  var regexS = "[\\?&]"+name+"=([^&#]*)";
+		  var regex = new RegExp( regexS );
+		  var results = regex.exec( href );
+		  if( results == null )
+		    return "";
+		  else
+		    return decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
+
+		function daydiff(first, second) {
+		    return (second-first)/(1000*60*60*24)
+		}
+
+		 function parseISO8601(dateStringInRange) {
+		    var isoExp = /^\s*(\d{4})-(\d\d)-(\d\d)\s*$/,
+		        date = new Date(NaN), month,
+		        parts = isoExp.exec(dateStringInRange);
+
+		    if(parts) {
+		      month = +parts[2];
+		      date.setFullYear(parts[1], month - 1, parts[3]);
+		      if(month != date.getMonth() + 1) {
+		        date.setTime(NaN);
+		      }
+		    }
+		    return date;
+		}
+
+		$(document).ready(function(){
+			var dateStr = getParameterByName('updateDate',document.URL);
+			var dateParam = new Date(parseISO8601(dateStr));
+			var dateToday = new Date();
+
+			if ( !isNaN( dateParam.getTime() ) ) {  //check if valid date
+			  // date is valid
+			  if(daydiff(dateParam, dateToday) > 8){
+			  	$("#dateWarning").show();
+			  	$("#tocCol").css('top','300px');
+			  }
+			}
+		});
+	</script>
+	</head>
+	<body style="margin:0px; padding:0px;">
+		<div id="body">
+			
+			<div id="dateWarning" class="warning" style="display:none;">
+				<h2>Alert: This package is more than 7 days old and may be out of date. <br/>Please check your e-mail for an updated package or contact Data Services.</h2>
+			</div>
+			
+			<div id="sectionTop" class="section">
+				<img id="ccsdLogo" name="ccsdLogo" src="image/ccsd-logo-header.png" title="Clark Country School District "/>
+				<h1>Enrollment Visualization</h1>
+			</div>
+			
+			<div class="leftCol">
+				<div class="section" id="gettingStartedSection">
+					<a name="start"></a><h2>Quick Start</h2>
+					<a href="Getting-started-with-Tableau-server-and-Tableau-online-2016 06 30.mp4" target="_blank"><img src="image/player.png"/ title="Quick Start Video" alt="Quick Start Video"></a>
+				</div>
+				
+				<div class="section">
+					<a name="notes"></a><h2>Notes</h2>
+					<p>
+						The data contained in this visualization is limited by school or performance zone. If your package is missing information or contains additional information (students, school, etc.) not relevant to your school or performance zone,  please submit a ticket through the Quick-IT system or by calling the CCSD Help Desk at (702) 799-3300.  
+
+					</p>
+					<p>
+						Images in this manual may have fabricated numbers and hidden or fake school names.
+					</p>
+					<p>This manual can be printed at any time. <a href="javascript:void(0)" onclick="window.print()">Print Here</a> or on the <em>Print Manual</em> link above the <em>Table of Contents</em>.
+					</p>
+				</div>
+				
+				<div class="section">
+					<a name="definitions"></a><h2>Definitions</h2>
+					<p><strong>Dashboard</strong> - A Dashboard is a single page visualization that is comprised of one or more charts or tables. This workbook contains three Dashboards:  <em>Current Enrollment Analysis, Weekly Enrollment Analysis, and Enrollment Analysis by Year.  </em>Each Dashboard is represented by a tab at the top of the Workbook.</p>
+					<p><strong>Workbook</strong> - A Workbook is a group of one or more Dashboards.  The current Workbook is entitled "Enrollment Visualization."" </p>
+					<p><strong>Enrollment</strong> - Enrollment is the total number of students officially on record at the specified point(s) in time. </p>
+					<p><em>Enrollment (Filtered)</em> - The enrollment after the application of any Action Filters and Quick Filters (see "Filters"). </p>
+					<p><em>Total Enrollment</em> - The enrollment after the application of any Quick Filters.  Total Enrollment is not affected by Action Filters (see "Filters").</p>
+					<p><strong>Grade Demographics</strong> - The balance in the population, by grade, after the "Grade By:" Parameter Filter has been selected (see "Filters").  Grade demographics can be viewed by ethnicity, gender, IEP Status, Section 504 status, LEP status, Service Type, or State Excluded students.  These demographics will be defined in the "Filters" section.</p>
+				</div>
+
+				<div class="section">
+					<a name="tabLayout"></a><h2>Tab Layout and Navigation</h2>
+					<p>
+						Information in Tableau is presented in tabs, or Dashboards, which are similar to sheets in Microsoft Excel. Named tabs contain separate Dashboards with different information allowing users to switch between them. To switch between Dashboards, click on the Dashboard title at the top. 
+					</p>
+					<a name="tabFormat"></a><h3>Dashboard Format</h3>
+					<img src="image/EnrollmentAnalysisDB.fw.png" title="Tab Layout" alt="Tab Layout Image"/>
+					<p>
+						All Dashboards are designed using the same basic format. The main area features the visualization and includes Action Filters (discussed below). The right column contains Quick Filters, Parameter Filters (both are discussed below) and graph legends. 
+					</p>
+					<a name="tooltips"></a><h3>Tooltips</h3>
+					
+					<p><img src="image/tooltipEnrollment.fw.png" width="218" height="112"></p>
+					<p>Tooltips are displayed when hovering over a graph element
+					of a chart. The tooltip will show what is being measured and the enrollment for that segment of the population.</p>
+
+				    <a name="filters"></a><h3>Filters</h3>
+					<p>Filters allow the user to look at the enrollment for a specific segment of the population.  There are three types of filters available in the Enrollment Visualization workbook.</p>
+					<p><strong>Action Filters</strong> - Action filters are filters that are applied when the user clicks on a specific graph representation of the enrolled population.  When that segment is selected, the remaining elements on the dashboard will be filtered to represent only that selected segment of the population.  Available Action Filter measures are:</p>
+					<p><em>Grade</em></p> 
+					<p><em>Ethnicity</em></p>  
+					<p><em>Gender</em></p> 
+					<p><em>IEP Status</em> - Enrolled students who have and IEP or don't have an IEP.</p>
+					<p><em>Section 504 Status</em> - Enrolled students who have a Section 504 plan and those who don't.</p>  
+					<p><em>LEP Status</em> - Enrolled students with Limited Enlish Proficiency and those who are English proficient.</p>
+					<p><em>Service Type</em> - The type of enrollment the student receives; designated as either "Primary," "Partial," or "Special Ed Services Only."</p>
+					<p><em>State Excluded</em> - Enrollments that are excluded from State of Nevada counts as specified by law.</p>  
+				    <p>For example, if "Multiracial" is selected in the "Ethnicity" table,...</p>
+				    <p><img src="image/drilldownaction1.fw.png" width="806" height="267"></p>
+					<p>...all other tables on the dashboard will be filtered to show only students enrolled who are classified as "Multiracial".  </p>
+					<p><img src="image/drilldownaction2.fw.png" width="815" height="595"></p>
+					<p>To remove the effect of an Action Filter, click on the selection a second time.  Action Filters do not carry forward from one Dashboard to another and are not available on all Dashboards.</p>
+					<p><strong>Quick Filters</strong> - Quick Filters are represented by the dropdown lists on the right side of the dashboard.  The available Quick Filters are School Year, Performance Zone, and School Name.  Users may select one value for each Quick Filter or they can select "All".  Selecting a Quick Filter will narrow the resulting Enrollment to that population only.</p>
+					<p><img src="image/drilldownquick1.fw.png" width="815" height="511"></p>
+					<p>Quick Filters applied on one Dashboard will affect all other Dashboards in the workbook.  </p>
+					<p><img src="image/drilldownquick2.fw.png" width="815" height="539"></p>
+				    </p>
+				    <p><strong>Parameter Filters</strong> - Parameter Filters will break down the analysis by a demographic measure selected using the dropdown list.  The available measures are:
+				    <p><em>Ethnicity</em></p>  
+					<p><em>Gender</em></p>
+					<p><em>IEP Status</em> - Enrolled students who have and IEP or don't have an IEP.</p>
+					<p><em>Section 504 Status</em> - Enrolled students who have a Section 504 plan and those who don't.</p>  
+					<p><em>LEP Status</em> - Enrolled students with Limited Enlish Proficiency and those who are English proficient. </p>
+					<p><em>Service Type</em> - The type of enrollment the student receives; designated as either "Primary," "Partial," or "Special Ed Services Only."</p>
+					<p><em>State Excluded</em> - Enrollments that are excluded from State of Nevada counts as specified by law.  </p>
+					<p><img src="image/parafilter1.fw.png" width="187" height="182"></p>
+					<p>The effect of selecting a Parameter Filter measure in the Current Enrollment Analysis Dashboard is seen on the Grade Demographics table.</p>
+					<p><img src="image/parafilter2.fw.png" width="450" height="332"></p>
+					<p>Parameter Filters applied on one Dashboard will affect all other Dashboards in the workbook.  </p>
+					<p><img src="image/parafilter3.fw.png" width="815" height="523"></p>
+				    </p>
+				</div>
+
+				<div class="section">
+
+					<a name="tabDetails"></a><h2>Tab Details</h2>
+
+					<a name="startTab"></a><h3>Start Tab</h3>
+					<p><img src="image/tabStart1.png" title="Start Tab" alt="Start Tab Image"/>
+					The <em>Start Tab</em> contains instructions to use the visualization, contact information, and disclaimers. There is a link to print the manual at the top right above the table of contents.
+					</p>
+
+					<p><a name="currentenrollmentanalysis"></a><h3>Current Enrollment Analysis</h3></p>
+					<p>The <em>Current Enrollment Analysis Dashboard</em> shows the total enrolled population for the current point in time.  The enrollment is broken down by:</p>
+					<p><em>Grade</em></p> 
+					<p><em>Ethnicity</em></p>  
+					<p><em>Gender</em></p> 
+					<p><em>IEP Status</em> - Enrolled students who have and IEP or don't have an IEP.</p>
+					<p><em>Section 504 Status</em> - Enrolled students who have a Section 504 plan and those who don't.</p>  
+					<p><em>LEP Status</em> - Enrolled students with Limited Enlish Proficiency and those who are English proficient. </p>
+					<p><em>Service Type</em> - The type of enrollment the student receives; designated as either "Primary," "Partial," or "Special Ed Services Only."</p>
+					<p><em>State Excluded</em> - Enrollments that are excluded from State of Nevada counts as specified by law. </p>
+					<p><img src="image/currEnrollAn.fw.png" width="815" height="519"></p>
+					<p>The Grade Demographic can be further broken down using the "Grade By:" Parameter Filter previously discussed.</p>  
+
+						
+			    	<p><a name="weeklyenrollmentanalysis"></a><h3>Weekly Enrollment Analysis</h3></p>
+					<p>The <em>Weekly Enrollment Analysis Dashboard</em> shows the total enrolled population for every Monday in the current school year.  The enrollment can be viewed using the Parameter Filter as previously discussed.  The "Total Enrollment" will remain on the Dashboard as the top line. </p>
+					<p><img src="image/weekEnrollAn.fw.png" width="815" height="519"></p>
+								
+					<p><a name="enrollmentanalysisbyyear"></a><h3>Enrollment Analysis by Year</h3></p>
+					<p>The <em>Enrollment Analysis by Year Dashboard</em> shows the total enrolled population using the count day enrollment for every school year to date, beginning with 2007.  The enrollment can be viewed using the Parameter Filter as previously discussed.  The "Total Enrollment" will remain on the Dashboard as the top line. 
+					<p><img src="image/Enrollbyyear.fw.png" width="815" height="538"></p>
+				</div>
+
+				<div class="section">
+				  
+				    <p><a name="exporting"><strong>Exporting</strong></p>
+				  	<p>Should you wish to export this information, you may do so on any visualization
+				    by selecting the &quot;Export&quot; tool at the top center of the dashboard.
+				    Selecting the &quot;Export&quot; tool will give the following options: </p>
+				  	<p><em>Image</em></p>
+				  	<p>Selecting &quot;Image&quot; will prompt you to save a copy of the screen
+				    you have displayed. Select &quot;Download&quot; to save the image.</p>
+				  	<p><img src="image/export%20image.fw.png" width="227" height="106"></p>
+				  	<p><em>Data</em></p>
+				  	<p>Selecting &quot;Data&quot; will allow you to export the data displayed
+				    on the dashboard to a text file. Note that you must select one bar from
+				    one of the graphs in order to activate the Data Export option on each
+				    of the tabs. Selecting the Summary tab will allow you to export one record
+				    with the displayed information (Example below). </p>
+				  	<p><img src="image/export%20data%20summary.fw.png" width="360" height="156"></p>
+				  	<p>Selecting the Underlying tab will allow you to export the detailed records
+				    displayed on the visualization (Example below). </p>
+				  	<p><img src="image/export%20underlying.fw.png" width="1575" height="255"> </p>
+				  	<p>&nbsp;</p>
+				  	<p><em>Cross tab</em></p>
+				  	<p>Selecting &quot;Cross tab&quot; will allow you to download the desired
+				    information directly into an Excel spreadsheet. Selecting &quot;Image&quot; will
+				    prompt you to save a copy of the screen you have displayed.
+				    Select &quot;Download&quot; to
+				    save the exported Excel file (Example below). </p>
+				  	<p><img src="image/cross%20tab%20example.fw.png" width="227" height="107"></p>
+				  	<p>&nbsp;</p>
+				  	<p><em>PDF</em></p>
+				  	<p>Selecting &quot;PDF&quot; will export the desired view to an Adobe Reader,
+				    or PDF file. After selecting &quot;PDF&quot;, determine your preferences
+				    for printing on the screen when prompted. The following options
+				    should be determined: </p>
+				  	<p> - Portrait or Landscape</p>
+				  	<p> - Paper Size</p>
+				  	<p>- Scaling: Allows for the selection of the size of the image to be exported. </p>
+				  	<p> - Content: Allows for the printing of the selected dashboard, Sheets
+				    in Dashboard (selection of specific graphs to be exported), Sheets in
+				    Workbook (selection of one or many sheets to be exported). </p>
+				  	<p><img src="image/export%20pdf.fw.png" width="427" height="416"></p>
+				  	<p>Once all selections have been made, select the &quot;Export&quot; button
+				    to complete the printing / saving of the exported information. </p>
+				  
+				</div>
+				
+				<div class="section">
+					<a name="support"></a>
+					<h2>Contact &amp; Support</h2>
+					<p>For any questions and support, please submit a ticket through the Quick-IT system or by calling the CCSD Help Desk at (702) 799-3300.  </p>
+			  	</div>
+			  
+			  	<div class="section">
+					<a name="disclaimer"></a><h2>Disclaimer</h2>
+					This visualization contains confidential student information.
+					<ul>
+						<li>The use and handling of this information must comply with FERPA regulations (<a href="http://www.ed.gov/policy/gen/guid/fpco/ferpa/index.html">http://www.ed.gov/policy/gen/guid/fpco/ferpa/index.html</a>).</li>
+						<li>Do not distribute this visualization to any non-CCSD personnel.</li>
+						<li>Do not distribute this visualization to staff that do not have a legitimate educational interest in the data.</li>
+						<li>AARSI-Data services team makes every effort to keep the information accurate and up to date. If you believe that there is any misrepresentation of data, please contact the AARSI-Data services team in order to have it corrected.</li>
+					</ul>
+				</div>
+				
+				<div class="section">
+					<a name="edfi"></a><h2>Ed-Fi</h2>
+					<img src="image/ed-fi-branding-logo.png" title="Tooltip" alt="Ed Fi Logo" style="width:200px;"/><br/>
+					Developed with technology provided by the Ed-Fi Alliance that was created with support from the Michael &amp; Susan Dell Foundation. Used under license.
+				</div>
+				
+			</div>
+			
+			<div class="rightCol" id="tocWrapper">
+				<div id="tocCol">
+					<h2>Table of Contents</h2>
+					<ul>
+						<li><a href="#start">Quick Start</a></li>
+						<li><a href="#notes">Notes</a></li>
+						<li><a href="#definitions">Definitions</a></li>
+						<li><a href="#tabLayout">Tab Layout and Navigation
+							<ul>
+								<li><a href="#tabFormat">Dashboard Format</a></li>
+								<li><a href="#tooltips">Tooltips</a></li>
+								<li><a href="#filters">Filters</a></li>
+							</ul>
+						</a></li>
+						<li><a href="#tabDetails">Tab Details
+							<ul>
+								<li><a href="#startTab">Start Tab</a></li>
+								<li><a href="#currentenrollmentanalysis">Current Enrollment Analysis</a></li>
+								<li><a href="#weeklyenrollmentanalysis">Weekly Enrollment Analysis</a></li>
+								<li><a href="#enrollmentanalysisbyyear">Enrollment Analysis by Year</a></li>
+							</ul>
+						</a></li>
+						<li><a href="#exporting">Exporting Data</a></li>
+						<li><a href="#support">Contact &amp; Support</a></li>
+						<li><a href="#disclaimer">Disclaimer</a></li>
+						<li><a href="#edfi">Ed-Fi</a></li>
+					</ul>
+					<div id="printCont"><a href="javascript:void(0)" onclick="window.print()" class="printLink">Print Manual</a>
+					</div>
+				</div>
+		  	</div>
+			
+			<div style="clear:both"></div>
+		</div>
+<!-- begin olark code -->
+
+<script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
+f[z]=function(){
+(a.s=a.s||[]).push(arguments)};var a=f[z]._={
+},q=c.methods.length;while(q--){(function(n){f[z][n]=function(){
+f[z]("call",n,arguments)}})(c.methods[q])}a.l=c.loader;a.i=nt;a.p={
+0:+new Date};a.P=function(u){
+a.p[u]=new Date-a.p[0]};function s(){
+a.P(r);f[z](r)}f.addEventListener?f.addEventListener(r,s,false):f.attachEvent("on"+r,s);var ld=function(){function p(hd){
+hd="head";return["<",hd,"></",hd,"><",i,' onl' + 'oad="var d=',g,";d.getElementsByTagName('head')[0].",j,"(d.",h,"('script')).",k,"='",l,"//",a.l,"'",'"',"></",i,">"].join("")}var i="body",m=d[i];if(!m){
+return setTimeout(ld,100)}a.P(1);var j="appendChild",h="createElement",k="src",n=d[h]("div"),v=n[j](d[h](z)),b=d[h]("iframe"),g="document",e="domain",o;n.style.display="none";m.insertBefore(n,m.firstChild).id=z;b.frameBorder="0";b.id=z+"-loader";if(/MSIE[ ]+6/.test(navigator.userAgent)){
+b.src="javascript:false"}b.allowTransparency="true";v[j](b);try{
+b.contentWindow[g].open()}catch(w){
+c[e]=d[e];o="javascript:var d="+g+".open();d.domain='"+d.domain+"';";b[k]=o+"void(0);"}try{
+var t=b.contentWindow[g];t.write(p());t.close()}catch(x){
+b[k]=o+'d.write("'+p().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}a.P(2)};ld()};nt()})({
+loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure","extend","declare","identify"]});
+/* custom configuration goes here (www.olark.com/documentation) */
+olark.identify('6275-990-10-7859');/*]]>*/</script><noscript><a href="https://www.olark.com/site/6275-990-10-7859/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
+<!-- end olark code -->
+	</body>
+	<script>
+
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-42882602-2', 'wiki-teacher.com');
+	  ga('send', 'pageview');
+
+	</script>
+</html>

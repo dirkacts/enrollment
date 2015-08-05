@@ -1,0 +1,29 @@
+h2 {padding: 5px 0; margin: 0; }
+h3 {padding: 5px 0 0 0; color:#7780A2;}
+#body {width:960px; margin: 0 auto; font-family: helvetica, arial, sans-serif; font-size: 12px; color: #6a3636; position:relative;}
+#sectionTop{ border:none;}
+.leftCol {width:690px; float: left;border-right: 1px solid #EEE; padding: 0 9px 0 10px;}
+.leftCol img {max-width: 99%; padding: 5px 0 0 0; margin-bottom: -5px;}
+.rightCol{width:240px; float:left; padding-left:10px;}
+.section { border-top: #EEE 1px solid; margin-bottom:20px;}
+.benchContTbl td{vertical-align: text-top;}
+.creditCont{width: 480px;}
+.creditCont td {padding: 0 10px;}
+.clear {clear:both;}
+#ccsdLogo {padding-top: 14px;}
+#tocWrapper {position:absolute; top:0; right: 0px;}
+#tocCol { position:fixed; top:10px; width:240px;}
+#tocCol h2{ padding-top:20px;}
+#tocCol ul{ list-style: none; padding-left: 20px;margin-left: 0px;}
+#printCont{height: 20px; position: absolute; top:0; right:0; margin-top: 5px; }
+.printLink{padding-left: 16px; background: url("../image/glyphicons_015_print.png") no-repeat; background-size: 14px;}
+#gettingStartedSection a {border:none;}
+#gettingStartedSection img {width:auto;border:none;}
+.warning{ 
+	border: 1px solid #CC0000;
+	background-color: #ff0000;
+	background-color:rgba(255,0,0,0.5);
+	color: #800000;
+	padding: 100px 20px;
+	text-align:center;
+}
